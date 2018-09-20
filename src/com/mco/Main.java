@@ -13,7 +13,7 @@ public class Main {
         tableArticles.add(article);
         Article article2 = new Article("47h","Buie",true,120,140,"Orange",0);
         tableArticles.add(article2);
-        Magasin magasin = new Magasin("Auchan",tableArticles);
+        Magasin magasin = new Magasin("Auchan",tableArticles,30000);
         article.vendre(1);
         article.achat(28);
         article2.achat(27);

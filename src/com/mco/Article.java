@@ -5,6 +5,7 @@ import java.util.Map;
 public class Article implements GestionStock,Solde{
     String ref;
     String nomArticle;
+    Magasin magasin;
     boolean estKilo;
     double prixAchat;
     double prixVente;
@@ -14,9 +15,10 @@ public class Article implements GestionStock,Solde{
     double stockProduit;
 
 
-    public Article(String ref, String nomArticle, boolean estKilo, double prixAchat, double prixVente,  String nomFournisseur, double stockProduit) {
+    public Article(String ref, String nomArticle,Magasin magasin, boolean estKilo, double prixAchat, double prixVente,  String nomFournisseur, double stockProduit) {
         this.ref = ref;
         this.nomArticle = nomArticle;
+        this.magasin=magasin;
         this.estKilo = estKilo;
         this.prixAchat = prixAchat;
         this.prixVente = prixVente;
@@ -26,15 +28,20 @@ public class Article implements GestionStock,Solde{
     }
 
     public void achat(double quantite){
-        if (stock.containsKey(ref))
-            stock.replace(ref,stock.get(ref)+quantite);
-        else
-            stock.put(ref,quantite);
+        if (prixAchat*quantite>magasin.getArgent())
+            System.out.println("Votre magasin ne peut pas se permettre d'acheter autant de produits de ce type, il n'a pas assez d'argent !");
+        else {
+            if (stock.containsKey(ref))
+                stock.replace(ref, stock.get(ref) + quantite);
+            else
+                stock.put(ref, quantite);
+        }
     }
 
     public void vendre(double quantite) {
         if (stock.containsKey(ref) &&  stock.get(ref)-quantite>=0){
             stock.replace(ref,stock.get(ref)-quantite);
+            magasin.setArgent(magasin.getArgent()+prixVente);
         }
         else if (stock.containsKey(ref) &&  stock.get(ref)-quantite<0){
             if (estKilo)

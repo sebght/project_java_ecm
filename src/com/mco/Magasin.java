@@ -6,11 +6,12 @@ public class Magasin implements Solde{
     String magasin;
     ArrayList<Article> tableauArticles;
     ArrayList<Double> tableauPrixAvantSoldes=new ArrayList<>();
-    float argent;
+    double argent=0;
 
-    public Magasin(String magasin, ArrayList<Article> tableauArticles) {
+    public Magasin(String magasin, ArrayList<Article> tableauArticles,float argent) {
         this.magasin = magasin;
         this.tableauArticles = tableauArticles;
+        this.argent=argent;
     }
 
     @Override
@@ -26,6 +27,14 @@ public class Magasin implements Solde{
         for (int i=0;i<tableauArticles.size();i++){
             tableauArticles.get(i).setPrixVente(tableauPrixAvantSoldes.get(i));
         }
+    }
+
+    public double getArgent() {
+        return argent;
+    }
+
+    public void setArgent(double argent) {
+        this.argent = argent;
     }
 
     @Override
