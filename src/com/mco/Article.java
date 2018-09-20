@@ -31,6 +31,7 @@ public class Article implements GestionStock,Solde{
         if (prixAchat*quantite>magasin.getArgent())
             System.out.println("Votre magasin ne peut pas se permettre d'acheter autant de produits de ce type, il n'a pas assez d'argent !");
         else {
+            magasin.setArgent(magasin.getArgent()-prixVente);
             if (stock.containsKey(ref))
                 stock.replace(ref, stock.get(ref) + quantite);
             else
