@@ -13,9 +13,10 @@ public class Article implements GestionStock,Solde{
     String nomFournisseur;
     Map<String, Double> stock = new HashMap<>();
     double stockProduit;
+    String description;
 
 
-    public Article(String ref, String nomArticle,Magasin magasin, boolean estKilo, double prixAchat, double prixVente,  String nomFournisseur, double stockProduit) {
+    public Article(String ref, String nomArticle,Magasin magasin, boolean estKilo, double prixAchat, double prixVente,  String nomFournisseur, double stockProduit, String description) {
         this.ref = ref;
         this.nomArticle = nomArticle;
         this.magasin=magasin;
@@ -25,6 +26,7 @@ public class Article implements GestionStock,Solde{
         this.nomFournisseur = nomFournisseur;
         this.stockProduit = stockProduit;
         stock.put(ref,stockProduit);
+        this.description=description;
     }
 
     public void achat(double quantite){
@@ -117,6 +119,14 @@ public class Article implements GestionStock,Solde{
 
     public void setStock(Map<String, Double> stock) {
         this.stock = stock;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

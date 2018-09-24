@@ -36,7 +36,9 @@ public class Magasin implements Solde{
     public void setArgent(double argent) {
         this.argent = argent;
     }
-
+    public void deleteArticle(Article article){
+        tableauArticles.remove(article);
+    }
     @Override
     public String toString() {
         return "Magasin{" +
