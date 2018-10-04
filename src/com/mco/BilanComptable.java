@@ -1,5 +1,7 @@
 package com.mco;
 
+import java.util.ArrayList;
+
 public interface BilanComptable {
-    public double bilan ();
+    public ArrayList<Double> bilan ();
 }

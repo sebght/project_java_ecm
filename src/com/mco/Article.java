@@ -2,59 +2,29 @@ package com.mco;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Article implements GestionStock,Solde{
+public class Article implements Solde{
     String ref;
     String nomArticle;
-    Magasin magasin;
     boolean estKilo;
     double prixAchat;
     double prixVente;
     double prixAvantSolde;
     String nomFournisseur;
     Map<String, Double> stock = new HashMap<>();
-    double stockProduit;
+    Map<String,Double> achats = new HashMap<>();
+    Map<String,Double> ventes = new HashMap<>();
     String description;
 
 
-    public Article(String ref, String nomArticle,Magasin magasin, boolean estKilo, double prixAchat, double prixVente,  String nomFournisseur, double stockProduit, String description) {
+
+    public Article(String ref, String nomArticle, boolean estKilo, double prixAchat, double prixVente,  String nomFournisseur,  String description) {
         this.ref = ref;
         this.nomArticle = nomArticle;
-        this.magasin=magasin;
         this.estKilo = estKilo;
         this.prixAchat = prixAchat;
         this.prixVente = prixVente;
         this.nomFournisseur = nomFournisseur;
-        this.stockProduit = stockProduit;
-        stock.put(ref,stockProduit);
         this.description=description;
-    }
-
-    public void achat(double quantite){
-        if (prixAchat*quantite>magasin.getArgent())
-            System.out.println("Votre magasin ne peut pas se permettre d'acheter autant de produits de ce type, il n'a pas assez d'argent !");
-        else {
-            magasin.setArgent(magasin.getArgent()-prixVente);
-            if (stock.containsKey(ref))
-                stock.replace(ref, stock.get(ref) + quantite);
-            else
-                stock.put(ref, quantite);
-        }
-    }
-
-    public void vendre(double quantite) {
-        if (stock.containsKey(ref) &&  stock.get(ref)-quantite>=0){
-            stock.replace(ref,stock.get(ref)-quantite);
-            magasin.setArgent(magasin.getArgent()+prixVente);
-        }
-        else if (stock.containsKey(ref) &&  stock.get(ref)-quantite<0){
-            if (estKilo)
-                System.out.println("Le produit n'est présent qu'en "+stock.get(ref)+" exemplaires dans le stock. Tu ne peux donc pas en vendre "+quantite+" kg.");
-            else
-                System.out.println("Le produit n'est présent qu'en "+stock.get(ref)+" exemplaires dans le stock. Tu ne peux donc pas en vendre "+quantite+" unités.");
-        }
-        else{
-            System.out.println("Le produit n'est pas en stock, tu ne peux donc pas le vendre dans une si grande quantité.");
-        }
     }
 
     public String getRef() {
@@ -129,6 +99,16 @@ public class Article implements GestionStock,Solde{
         this.description = description;
     }
 
+    public Map<String, Double> getAchats() {
+        return achats;
+    }
+
+    public Map<String, Double> getVentes() {
+        return ventes;
+    }
+
+
+
     @Override
     public void debuterSoldes(double percentage) {
         prixAvantSolde=prixVente;
@@ -139,4 +119,6 @@ public class Article implements GestionStock,Solde{
     public void arreterSoldes() {
         prixVente=prixAvantSolde;
     }
+
+
 }

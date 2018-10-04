@@ -7,6 +7,7 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
+    /*
 	// write your code here
         ArrayList<Article> tableArticles = new ArrayList<>();
         Article article = new Article("46h","Buie",true,120,150,"Orange",0);
@@ -31,6 +32,31 @@ public class Main {
         magasin.arreterSoldes();
         System.out.println(article.getPrixVente());
         System.out.println(article2.getPrixVente());
+        */
+
+        //Je créé un magasin
+        Magasin magasin1=new Magasin("Auchan Vieux Port",30000);
+        System.out.println(magasin1.getArgent());
+        System.out.println(magasin1.getTableauArticles());
+        //Je créé un article
+        Article article1= new Article("0000","Parapluie",false,4,10,"myUmbrella.com","Ceci est un parapluie");
+        //J'en achete 10:
+        magasin1.achat(article1,10);
+        System.out.println(magasin1.getArgent());
+        System.out.println(magasin1.getTableauArticles());
+        //J'en vend 5
+        magasin1.vendre(article1,5);
+        System.out.println(magasin1.getArgent());
+        System.out.println(magasin1.getTableauArticles());
+        System.out.println(magasin1.bilan());
+        //Je fais -50% sur tout le magasin
+        magasin1.debuterSoldes(50);
+        //J'en revend un
+        magasin1.vendre(article1,1);
+        System.out.println(magasin1.getArgent());
+        //j'arrête les soldes
+        magasin1.arreterSoldes();
+
     }
 
 }
