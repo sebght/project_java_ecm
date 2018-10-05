@@ -146,8 +146,8 @@ public class Magasin implements GestionStock, Solde{
         double sommeAchats=0;
         double sommeVentes=0;
         double marge;
-        //Je créé un set de strings dans laquelle je mettrai toutes les references de produits electromenagers du magasin
-        //On créé un set car le set n'acceptera pas l'ajout d'un duplicata
+        //Je créée un set de strings dans laquelle je mettrai toutes les references de produits electromenagers du magasin
+        //On créée un set car le set n'acceptera pas l'ajout d'un duplicata
         Set<String> mesReferences=new HashSet<>();
         for (Article art : tableauArticles){
             if (art instanceof Electromenager){
@@ -247,6 +247,33 @@ public class Magasin implements GestionStock, Solde{
         return mesResultats;
     }
 
+    public void setTableauArticles(ArrayList<Article> tableauArticles) {
+        this.tableauArticles = tableauArticles;
+    }
+
+    public Map<String, Integer> getStock() {
+        return stock;
+    }
+
+    public void setStock(Map<String, Integer> stock) {
+        this.stock = stock;
+    }
+
+    public Map<String, Double> getAchats() {
+        return achats;
+    }
+
+    public void setAchats(Map<String, Double> achats) {
+        this.achats = achats;
+    }
+
+    public Map<String, Double> getVentes() {
+        return ventes;
+    }
+
+    public void setVentes(Map<String, Double> ventes) {
+        this.ventes = ventes;
+    }
 
     public double getArgent() {
         return argent;
