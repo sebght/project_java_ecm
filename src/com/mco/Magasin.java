@@ -1,8 +1,6 @@
 package com.mco;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public class Magasin implements GestionStock, Solde{
     String magasin;
@@ -108,8 +106,20 @@ public class Magasin implements GestionStock, Solde{
         double marge;
         //On somme les prix d'achats puis de vente de tous les articles
         for (Article article : tableauArticles){
-            sommeAchats+=achats.get(article.getRef());
-            sommeVentes+=ventes.get(article.getRef());
+            try {
+                sommeAchats+=achats.get(article.getRef());
+            } catch (Exception e){
+                sommeAchats+=0;
+                System.out.println("Aucun achat de cet article n'a été répertoriée");
+            }
+
+            try {
+                sommeVentes+=ventes.get(article.getRef());
+            } catch (Exception e) {
+                sommeVentes+=0;
+                System.out.println("Aucune vente de cet article n'a été répertoriée");
+            }
+
         }
         //On fait la différence pour obtenir le bilan comptable du magasin:
         marge=sommeVentes-sommeAchats;
@@ -125,13 +135,38 @@ public class Magasin implements GestionStock, Solde{
     }
 
     public ArrayList<Double> bilanArticle(Article article){
+        ArrayList<Double> mesResultats= new ArrayList<>();
+        mesResultats.add(achats.get(article.getRef()));
+        mesResultats.add(ventes.get(article.getRef()));
+        mesResultats.add(ventes.get(article.getRef())- achats.get(article.getRef()));
+        return mesResultats;
+    }
+
+    public ArrayList<Double> bilanElectromenager(){
         double sommeAchats=0;
         double sommeVentes=0;
         double marge;
+        //Je créé un set de strings dans laquelle je mettrai toutes les references de produits electromenagers du magasin
+        //On créé un set car le set n'acceptera pas l'ajout d'un duplicata
+        Set<String> mesReferences=new HashSet<>();
         for (Article art : tableauArticles){
-            if (art.getRef()==article.getRef()){
-                sommeAchats+=achats.get(article.getRef());
-                sommeVentes+=ventes.get(article.getRef());
+            if (art instanceof Electromenager){
+                mesReferences.add(art.getRef());
+            }
+        }
+        // On parcourt le set et on cherche les achats et ventes pour chaque référence pour les sommer et faire le bilan
+        for (String ref : mesReferences){
+            try {
+                sommeAchats+=achats.get(ref);
+            } catch (Exception e){
+                sommeAchats+=0;
+                System.out.println("Aucun achat de cet article n'a été répertoriée");
+            }
+            try {
+                sommeVentes+=ventes.get(ref);
+            } catch (Exception e) {
+                sommeVentes += 0;
+                System.out.println("Aucune vente de cet article n'a été répertoriée");
             }
         }
         marge=sommeVentes-sommeAchats;
@@ -141,6 +176,77 @@ public class Magasin implements GestionStock, Solde{
         mesResultats.add(marge);
         return mesResultats;
     }
+
+    public ArrayList<Double> bilanPrimeurs(){
+        double sommeAchats=0;
+        double sommeVentes=0;
+        double marge;
+        //Je créé un set de strings dans laquelle je mettrai toutes les references de Primeurs du magasin
+        //On créé un set car le set n'acceptera pas l'ajout d'un duplicata
+        Set<String> mesReferences=new HashSet<>();
+        for (Article art : tableauArticles){
+            if (art instanceof Primeur){
+                mesReferences.add(art.getRef());
+            }
+        }
+        // On parcourt le set et on cherche les achats et ventes pour chaque référence pour les sommer et faire le bilan
+        for (String ref : mesReferences){
+            try {
+                sommeAchats+=achats.get(ref);
+            } catch (Exception e){
+                sommeAchats+=0;
+                System.out.println("Aucun achat de cet article n'a été répertoriée");
+            }
+            try {
+                sommeVentes+=ventes.get(ref);
+            } catch (Exception e) {
+                sommeVentes += 0;
+                System.out.println("Aucune vente de cet article n'a été répertoriée");
+            }
+        }
+        marge=sommeVentes-sommeAchats;
+        ArrayList<Double> mesResultats= new ArrayList<>();
+        mesResultats.add(sommeAchats);
+        mesResultats.add(sommeVentes);
+        mesResultats.add(marge);
+        return mesResultats;
+    }
+
+    public ArrayList<Double> bilanHabits(){
+        double sommeAchats=0;
+        double sommeVentes=0;
+        double marge;
+        //Je créé un set de strings dans laquelle je mettrai toutes les references d'habits du magasin
+        //On créé un set car le set n'acceptera pas l'ajout d'un duplicata
+        Set<String> mesReferences=new HashSet<>();
+        for (Article art : tableauArticles){
+            if (art instanceof Habit){
+                mesReferences.add(art.getRef());
+            }
+        }
+        // On parcourt le set et on cherche les achats et ventes pour chaque référence pour les sommer et faire le bilan
+        for (String ref : mesReferences){
+            try {
+                sommeAchats+=achats.get(ref);
+            } catch (Exception e){
+                sommeAchats+=0;
+                System.out.println("Aucun achat de cet article n'a été répertoriée");
+            }
+            try {
+                sommeVentes+=ventes.get(ref);
+            } catch (Exception e) {
+                sommeVentes += 0;
+                System.out.println("Aucune vente de cet article n'a été répertoriée");
+            }
+        }
+        marge=sommeVentes-sommeAchats;
+        ArrayList<Double> mesResultats= new ArrayList<>();
+        mesResultats.add(sommeAchats);
+        mesResultats.add(sommeVentes);
+        mesResultats.add(marge);
+        return mesResultats;
+    }
+
 
     public double getArgent() {
         return argent;
