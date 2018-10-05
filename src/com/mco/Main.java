@@ -40,12 +40,15 @@ public class Main {
         System.out.println(magasin1.getTableauArticles());
         //Je créé un article
         Article article1= new Article("0000","Parapluie",false,4,10,"myUmbrella.com","Ceci est un parapluie");
+        Primeur orange= new Primeur("0001","Parapluie",false,2,7,"myUmbrella.com","Ceci est un parapluie","Fruit","Agrume");
         //J'en achete 10:
         magasin1.achat(article1,10);
+        magasin1.achat(orange,25);
         System.out.println(magasin1.getArgent());
         System.out.println(magasin1.getTableauArticles());
         //J'en vend 5
         magasin1.vendre(article1,5);
+        magasin1.vendre(orange,10);
         System.out.println(magasin1.getArgent());
         System.out.println(magasin1.getTableauArticles());
         System.out.println(magasin1.bilan());
@@ -56,7 +59,8 @@ public class Main {
         System.out.println(magasin1.getArgent());
         //j'arrête les soldes
         magasin1.arreterSoldes();
-
+        System.out.println(magasin1.bilanArticle(article1));
+        System.out.println(magasin1.bilanArticle(orange));
     }
 
 }

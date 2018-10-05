@@ -124,6 +124,24 @@ public class Magasin implements GestionStock, Solde{
         return mesResultats;
     }
 
+    public ArrayList<Double> bilanArticle(Article article){
+        double sommeAchats=0;
+        double sommeVentes=0;
+        double marge;
+        for (Article art : tableauArticles){
+            if (art.getRef()==article.getRef()){
+                sommeAchats+=achats.get(article.getRef());
+                sommeVentes+=ventes.get(article.getRef());
+            }
+        }
+        marge=sommeVentes-sommeAchats;
+        ArrayList<Double> mesResultats= new ArrayList<>();
+        mesResultats.add(sommeAchats);
+        mesResultats.add(sommeVentes);
+        mesResultats.add(marge);
+        return mesResultats;
+    }
+
     public double getArgent() {
         return argent;
     }

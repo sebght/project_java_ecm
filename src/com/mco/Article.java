@@ -1,4 +1,5 @@
 package com.mco;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -114,6 +115,7 @@ public class Article implements Solde{
         prixAvantSolde=prixVente;
         prixVente=prixVente*(100-percentage)/100;
     }
+
 
     @Override
     public void arreterSoldes() {
