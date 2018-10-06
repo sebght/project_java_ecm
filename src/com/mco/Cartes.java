@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import javax.swing.*;
 import javax.swing.JPanel;
+import javax.xml.bind.Element;
 
 
 public class Cartes extends JFrame implements ActionListener {
@@ -27,12 +28,14 @@ public class Cartes extends JFrame implements ActionListener {
         JButton button3 = new JButton("Infos Article");
         JButton button4 = new JButton("Solder");
         Magasin m1 = new Magasin(magasin,arg);
-        Article art1 = new Article("1pqf","Parapluie",false,0,25,"Umbreallaforlife","Oh il est beau le parapluie");
-        Electromenager art2 = new Electromenager("9ekg","Aspirateur",false,0,210,"Aspi2000","Aspirateur de compét","Rowenta","toutes pièces");
+        Article art1 = new Article("1pqf","Parapluie",false,20,25,"Umbrellaforlife","Oh il est beau le parapluie");
+        Electromenager art2 = new Electromenager("9ekg","Aspirateur",false,120,210,"Aspi2000","Aspirateur de compét","Rowenta","toutes pièces");
         Habit art3 = new Habit("5hgl","Jupe",false,0,18.5,"Zara","Une jolie jupe pour l'été","Zara","S","Jaune");
         Primeur art4 = new Primeur("1ogg","Haricots verts",true,0,4.6,"Fermier","Des bons zaricots","Légumes","Légumes verts");
         m1.achat(art1,18);
+        m1.vendre(art1,16);
         m1.achat(art2,3);
+        m1.vendre(art2,2);
         m1.achat(art3,5);
         m1.achat(art4,3);
         setPreferredSize(new Dimension(300,350));
@@ -96,6 +99,8 @@ public class Cartes extends JFrame implements ActionListener {
         checkDispos.put("bilanArticle",false);
         checkDispos.put("getDescription",false);
         checkDispos.put("setDescription",false);
+        final boolean[] checkSoldes = {false};
+        final boolean[] checkSoldesMagasin = {false};
         final String[] choix_article = {new String()};
         final Article[] article = {new Article("x", "x", true, 1, 1, "x", "x")};
         button1.addActionListener(new ActionListener() {
@@ -106,14 +111,76 @@ public class Cartes extends JFrame implements ActionListener {
                     label2.setText(String.valueOf(m1.bilanElectromenager().get(0)));
                     label4.setText(String.valueOf(m1.bilanElectromenager().get(1)));
                     label6.setText(String.valueOf(m1.bilanElectromenager().get(2)));
+                    setTitle("Gérer "+magasin);
                 }
                 else {
                     //faire apparaitre jDialog de transaction
-//                    JOptionPane jop3 = new JOptionPane();
-//                    String[] transaction = {"acheter","vendre"};
-//                    int rang = jop3.showOptionDialog(null,"Voulez-vous acheter ou vendre ?","Fenêtre de transaction",
-//                            JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,transaction,transaction[0]);
-//                    JOptionPane jop4 = new JOptionPane();
+                    JOptionPane jop1 = new JOptionPane();
+                    String[] transaction = {"acheter","vendre"};
+                    int rang = jop1.showOptionDialog(null,"Voulez-vous acheter ou vendre ?","Fenêtre de transaction",
+                            JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,transaction,transaction[0]);
+                    if (rang==0){
+                        //effectuer l'achat
+                        JOptionPane jop2 = new JOptionPane();
+                        String[] categ = {"Electroménager","Habit","Primeur","Autre"};
+                        int rang2 = jop2.showOptionDialog(null,"Quelle catégorie de produit voulez-vous acheter ?","Achat d'un produit",
+                                JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,categ,categ[0]);
+                        String ref = jop2.showInputDialog(null,"Quel est la référence de l'article ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                        String nomArticle = jop2.showInputDialog(null,"Son nom ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                        double prixAchat = Double.valueOf(jop2.showInputDialog(null,"Son prix d'achat ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE));
+                        double prixVente = Double.valueOf(jop2.showInputDialog(null,"Son prix de vente initial ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE));
+                        int quant= Integer.valueOf(jop2.showInputDialog(null,"Combien voulez-vous en acheter ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE));
+                        String nomFournisseur = jop2.showInputDialog(null,"Son fournisseur ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                        String description = jop2.showInputDialog(null,"Sa description ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                        if (rang2==0){
+                            String marque = jop2.showInputDialog(null,"Sa marque ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                            String piece = jop2.showInputDialog(null,"La pièce dans laquelle il s'utilise ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                            try {
+                                m1.achat(new Electromenager(ref,nomArticle,false,prixAchat,prixVente,nomFournisseur,description,marque,piece),quant);
+                            } catch (Exception e1){
+                                jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ce produit ! ");
+                            }
+                        }
+                        else if (rang2==1){
+                            String marque = jop2.showInputDialog(null,"Sa marque ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                            String taille = jop2.showInputDialog(null,"Sa taille ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                            String couleur = jop2.showInputDialog(null,"Sa couleur ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                            try {
+                                m1.achat(new Habit(ref,nomArticle,false,prixAchat,prixVente,nomFournisseur,description,marque,taille,couleur),quant);
+                            } catch (Exception e1){
+                                jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ce produit ! ");
+                            }
+                        }
+                        else if (rang2==2){
+                            String[] typeList = {"Fruit","Légume"};
+                            String type = typeList[jop2.showOptionDialog(null,"Quelle catégorie de produit voulez-vous acheter ?","Achat d'un produit",
+                                    JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,typeList,null)];
+                            String[] isKilo = {"Kilo","Pièce"};
+                            int kilo_piece = jop2.showOptionDialog(null,"Quelle catégorie de produit voulez-vous acheter ?","Achat d'un produit",
+                                    JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,isKilo,null);
+                            boolean check_kilo_piece;
+                            if (kilo_piece==0)
+                                check_kilo_piece=true;
+                            else check_kilo_piece=false;
+                            String sous_type;
+                            if (type=="Fruit"){
+                                String[] sous_typeList = {"Feuille","Tige","Fleur","Racine","Bulbe","Légume sec","Légume fruit","Tubercule"};
+                                sous_type = (String)jop1.showInputDialog(null,"Quel type de "+type+" ?","Achat d'un produit"
+                                        ,JOptionPane.QUESTION_MESSAGE,null, sous_typeList,null);
+                            }
+                            else {
+                                String[] sous_typeList = {"Sec","Charnus","Multiple","Complexe","Composé"};
+                                sous_type = (String)jop1.showInputDialog(null,"Quel type de "+type+" ?","Achat d'un produit"
+                                        ,JOptionPane.QUESTION_MESSAGE,null, sous_typeList,null);
+                            }
+                            try {
+                                m1.achat(new Primeur(ref,nomArticle,check_kilo_piece,prixAchat,prixVente,nomFournisseur,description,type,sous_type),quant);
+                            } catch (Exception e1){
+                                jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ce produit ! ");
+                            }
+                        }
+                    }
+
                 }
             }
         });
@@ -136,7 +203,7 @@ public class Cartes extends JFrame implements ActionListener {
                     button4.setText("Article");
                     label1.setText("Achats");
                     label2.setText(String.valueOf(m1.bilan().get(0)));
-                    label3.setText("Dépenses");
+                    label3.setText("Ventes");
                     label4.setText(String.valueOf(m1.bilan().get(1)));
                     label5.setText("Marge");
                     label6.setText(String.valueOf(m1.bilan().get(2)));
@@ -144,14 +211,15 @@ public class Cartes extends JFrame implements ActionListener {
                 else if (checkDispos.get("getDescription")){
                     //get description button
                     //faire le jDialog
-                    JOptionPane jop6 = new JOptionPane();
-                    jop6.showMessageDialog(null,"La description de l'article "+ article[0].getNomArticle() +" est : "+ article[0].getDescription());
+                    JOptionPane jop1 = new JOptionPane();
+                    jop1.showMessageDialog(null,"La description de l'article "+ article[0].getNomArticle() +" est : "+ article[0].getDescription());
                 }
                 else {
                     //afficher la vue bilan de Habits
                     label2.setText(String.valueOf(m1.bilanHabits().get(0)));
                     label4.setText(String.valueOf(m1.bilanHabits().get(1)));
                     label6.setText(String.valueOf(m1.bilanHabits().get(2)));
+                    setTitle("Gérer "+magasin);
                 }
             }
         });
@@ -170,7 +238,7 @@ public class Cartes extends JFrame implements ActionListener {
                     label4.setText("0");
                     label5.setText("Valeur théorique");
                     label6.setText("0");
-                    JOptionPane jop5 = new JOptionPane();
+                    JOptionPane jop1 = new JOptionPane();
                     String[] list_choix = new String[m1.getStock().keySet().size()];
                     int j=0;
                     for (String m:m1.getStock().keySet()){
@@ -178,7 +246,7 @@ public class Cartes extends JFrame implements ActionListener {
                         System.out.println(list_choix[j]);
                         j++;
                     }
-                    String choix_article = (String)jop5.showInputDialog(null,"Quel article ?","Infos d'un article"
+                    String choix_article = (String)jop1.showInputDialog(null,"Quel article ?","Infos d'un article"
                             ,JOptionPane.QUESTION_MESSAGE,null, list_choix,null);
                     boolean a=false;
                     for (int i=0;i<m1.tableauArticles.size();i++){
@@ -190,20 +258,21 @@ public class Cartes extends JFrame implements ActionListener {
                     }
                     setTitle("Gestion Article : "+article[0].getNomArticle());
                 }
-                else if (checkDispos.get("elec")){
+                else if (checkDispos.get("primeur")){
                     //faire apparaitre bilan Primeur
-                    label2.setText(String.valueOf(m1.bilanHabits().get(0)));
-                    label4.setText(String.valueOf(m1.bilanHabits().get(1)));
-                    label6.setText(String.valueOf(m1.bilanHabits().get(2)));
+                    label2.setText(String.valueOf(m1.bilanPrimeurs().get(0)));
+                    label4.setText(String.valueOf(m1.bilanPrimeurs().get(1)));
+                    label6.setText(String.valueOf(m1.bilanPrimeurs().get(2)));
+                    setTitle("Gérer "+magasin);
                 }
                 else {
                     //set description button
                     //faire le jDialog
-                    JOptionPane jop8 = new JOptionPane();
-                    String new_description = jop8.showInputDialog(null,"Quel est la nouvelle description ?","Changer la description",JOptionPane.QUESTION_MESSAGE);
+                    JOptionPane jop1 = new JOptionPane();
+                    String new_description = jop1.showInputDialog(null,"Quel est la nouvelle description ?","Changer la description",JOptionPane.QUESTION_MESSAGE);
                     article[0].setDescription(new_description);
-                    JOptionPane jop9 = new JOptionPane();
-                    jop9.showMessageDialog(null,"La description de l'article "+ article[0].getNomArticle() +" est : "+ article[0].getDescription());
+                    JOptionPane jop2 = new JOptionPane();
+                    jop2.showMessageDialog(null,"La description de l'article "+ article[0].getNomArticle() +" est : "+ article[0].getDescription());
                 }
             }
         });
@@ -212,7 +281,58 @@ public class Cartes extends JFrame implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 if (checkDispos.get("setDescription")){
                     //activer/désactiver soldes
-                    
+                    if (checkSoldes[0]){
+                        article[0].arreterSoldes();
+                        checkSoldes[0] =false;
+                        button4.setText("Solder");
+                    }
+                    else {
+                        JOptionPane jop1 = new JOptionPane();
+                        double pourcentage = Float.valueOf(jop1.showInputDialog(null,"A combien de % voulez-vous solder votre article ?"));
+                        article[0].debuterSoldes(pourcentage);
+                        checkSoldes[0]=true;
+                        button4.setText("Ne plus solder");
+                    }
+                }
+                else if (checkDispos.get("infos_article")){
+                    //activer/désactiver soldes du magasin entier
+                    if (checkSoldesMagasin[0]){
+                        m1.arreterSoldes();
+                        checkSoldesMagasin[0]=false;
+                        button4.setText("Solder");
+                    }
+                    else {
+                        JOptionPane jop1 = new JOptionPane();
+                        double pourcentage = Float.valueOf(jop1.showInputDialog(null,"A combien de % voulez-vous solder votre magasin ?"));
+                        m1.debuterSoldes(pourcentage);
+                        checkSoldesMagasin[0]=true;
+                        button4.setText("Ne plus solder");
+                    }
+                }
+                else {
+                    //faire apparaitre le bilan d'un article précis
+                    JOptionPane jop1 = new JOptionPane();
+                    String[] list_choix = new String[m1.getStock().keySet().size()];
+                    int j=0;
+                    for (String m:m1.getStock().keySet()){
+                        list_choix[j]= m;
+                        System.out.println(list_choix[j]);
+                        j++;
+                    }
+                    String choix_article = (String)jop1.showInputDialog(null,"Quel article ?","Bilan comptable d'un article"
+                            ,JOptionPane.QUESTION_MESSAGE,null, list_choix,null);
+                    boolean a=false;
+                    for (int i=0;i<m1.tableauArticles.size();i++){
+                        if (a){}
+                        else if (m1.tableauArticles.get(i).getRef()==choix_article){
+                            article[0] =m1.tableauArticles.get(i);
+                            a=true;
+                        }
+                    }
+                    label2.setText(String.valueOf(m1.bilanArticle(article[0]).get(0)));
+                    label4.setText(String.valueOf(m1.bilanArticle(article[0]).get(1)));
+                    label6.setText(String.valueOf(m1.bilanArticle(article[0]).get(2)));
+                    setTitle("Bilan Article : "+article[0].getNomArticle());
                 }
             }
         });
@@ -227,10 +347,10 @@ public class Cartes extends JFrame implements ActionListener {
 }
 class EssaiCartes {
     public static void main(String[] arg) {
-        JOptionPane jop = new JOptionPane();
+        JOptionPane jop1 = new JOptionPane();
         JOptionPane jop2 = new JOptionPane();
-        String nom = jop.showInputDialog(null,"Quel est le nom de votre magasin ?","Initialisation magasin",JOptionPane.QUESTION_MESSAGE);
-        Float x = Float.valueOf(jop.showInputDialog(null,"Combien votre magasin possède-t-il d'argent ?"));
+        String nom = jop1.showInputDialog(null,"Quel est le nom de votre magasin ?","Initialisation magasin",JOptionPane.QUESTION_MESSAGE);
+        Float x = Float.valueOf(jop2.showInputDialog(null,"Combien votre magasin possède-t-il d'argent ?","Argent du magasin",JOptionPane.QUESTION_MESSAGE));
         new Cartes(nom,x);
     }
 }

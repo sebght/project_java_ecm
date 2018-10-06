@@ -119,14 +119,10 @@ public class Magasin implements GestionStock, Solde{
                 sommeVentes+=0;
                 System.out.println("Aucune vente de cet article n'a été répertoriée");
             }
-
         }
         //On fait la différence pour obtenir le bilan comptable du magasin:
         marge=sommeVentes-sommeAchats;
         //On retourne tout dans une arrayList de type double. On accède donc au résultat comme ceci:
-        //mesResultats[0]=sommeAchats
-        //mesResultats[0]=sommeVentes
-        //mesResultats[0]=marge
         ArrayList<Double> mesResultats=new ArrayList<>();
         mesResultats.add(sommeAchats);
         mesResultats.add(sommeVentes);
@@ -136,9 +132,24 @@ public class Magasin implements GestionStock, Solde{
 
     public ArrayList<Double> bilanArticle(Article article){
         ArrayList<Double> mesResultats= new ArrayList<>();
-        mesResultats.add(achats.get(article.getRef()));
-        mesResultats.add(ventes.get(article.getRef()));
-        mesResultats.add(ventes.get(article.getRef())- achats.get(article.getRef()));
+        double sommeAchats=0;
+        double sommeVentes=0;
+        try {
+            sommeAchats+=achats.get(article.getRef());
+        } catch (Exception e){
+            sommeAchats+=0;
+            System.out.println("Aucun achat de cet article n'a été répertoriée");
+        }
+
+        try {
+            sommeVentes+=ventes.get(article.getRef());
+        } catch (Exception e) {
+            sommeVentes+=0;
+            System.out.println("Aucune vente de cet article n'a été répertoriée");
+        }
+        mesResultats.add(sommeAchats);
+        mesResultats.add(sommeVentes);
+        mesResultats.add(sommeVentes - sommeAchats);
         return mesResultats;
     }
 
