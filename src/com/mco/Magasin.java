@@ -98,7 +98,7 @@ public class Magasin implements GestionStock, Solde{
 
     @Override
     public void arreterSoldes() {
-        System.out.println(tableauPrixAvantSoldes);
+//        System.out.println(tableauPrixAvantSoldes);
         for (int i=0;i<tableauArticles.size();i++){
             tableauArticles.get(i).setPrixVente(tableauPrixAvantSoldes.get(i));
         }

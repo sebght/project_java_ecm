@@ -4,10 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JPanel;
@@ -114,8 +112,12 @@ public class Cartes extends JFrame implements ActionListener {
         checkDispos.put("bilanArticle",false);
         checkDispos.put("getDescription",false);
         checkDispos.put("setDescription",false);
-        final boolean[] checkSoldes = {false};
+        final Map<String,Double> checkSoldes = new HashMap<>();
+        for (String i:m1.getStock().keySet()){
+            checkSoldes.put(i,0.0);
+        }
         final boolean[] checkSoldesMagasin = {false};
+        double pourcentage2 = 0.0;
         final String[] choix_article = {new String()};
         final Article[] article = {new Article("x", "x", true, 1, 1, "x", "x")};
         accueil.addActionListener(new ActionListener() {
@@ -140,7 +142,10 @@ public class Cartes extends JFrame implements ActionListener {
                 button1.setText("Acheter/Vendre");
                 button2.setText("Bilan");
                 button3.setText("Infos Article");
-                button4.setText("Solder");
+                if (checkSoldesMagasin[0])
+                    button4.setText("Ne plus solder");
+                else button4.setText("Solder");
+                setTitle("Gérer "+magasin);
             }
         });
         button1.addActionListener(new ActionListener() {
@@ -153,8 +158,8 @@ public class Cartes extends JFrame implements ActionListener {
                     label6.setText(String.valueOf(m1.bilanElectromenager().get(2)));
                     setTitle("Gérer "+magasin);
                 }
-                else {
-                    //faire apparaitre jDialog de transaction
+                else if (checkDispos.get("infos_article")){
+                    //faire apparaitre jDialog de transaction sans article pré choisi
                     JOptionPane jop1 = new JOptionPane();
                     String[] transaction = {"acheter","vendre"};
                     int rang = jop1.showOptionDialog(null,"Voulez-vous acheter ou vendre ?","Fenêtre de transaction",
@@ -178,7 +183,7 @@ public class Cartes extends JFrame implements ActionListener {
                             try {
                                 m1.achat(new Electromenager(ref,nomArticle,false,prixAchat,prixVente,nomFournisseur,description,marque,piece),quant);
                             } catch (Exception e1){
-                                jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ce produit ! ");
+                                jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ces produits ! ");
                             }
                         }
                         else if (rang2==1){
@@ -242,7 +247,7 @@ public class Cartes extends JFrame implements ActionListener {
                                 a=true;
                             }
                         }
-                        int quant = Integer.valueOf(jop2.showInputDialog(null,"Sa marque ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE));
+                        int quant = Integer.valueOf(jop2.showInputDialog(null,"Combien voulez-vous en vendre ?","Vente d'un produit",JOptionPane.QUESTION_MESSAGE));
                         try {
                             m1.vendre(article[0],quant);
                         } catch (Exception e1){
@@ -251,6 +256,39 @@ public class Cartes extends JFrame implements ActionListener {
                         label2.setText(String.valueOf(m1.nbVentes));
                         label4.setText(String.valueOf(m1.nbAchats));
                         label6.setText(String.valueOf(m1.getArgent())+" €");
+                    }
+                }
+                else {
+                    //faire apparaitre jDialog de transaction avec article pré choisi
+                    JOptionPane jop1 = new JOptionPane();
+                    String[] transaction = {"acheter","vendre"};
+                    int rang = jop1.showOptionDialog(null,"Voulez-vous acheter ou vendre ?","Fenêtre de transaction",
+                            JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,transaction,transaction[0]);
+                    if (rang==0){
+                        //effectuer l'achat
+                        JOptionPane jop2 = new JOptionPane();
+                        int quant= Integer.valueOf(jop2.showInputDialog(null,"Combien voulez-vous en acheter ?","Achat de ce produit",JOptionPane.QUESTION_MESSAGE));
+                        try {
+                                m1.achat(article[0],quant);
+                            } catch (Exception e1){
+                                jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ces produits ! ");
+                            }
+                        label2.setText(String.valueOf(m1.ventes.get(article[0].getRef())));
+                        label4.setText(String.valueOf(m1.getStock().get(article[0].getRef())));
+                        label6.setText(String.valueOf(m1.getStock().get(article[0].getRef())*article[0].getPrixVente())+" €");
+                    }
+                    else {
+                        //faire la procédure de vente d'un produit
+                        JOptionPane jop2 = new JOptionPane();
+                        int quant = Integer.valueOf(jop2.showInputDialog(null,"Combien voulez-vous en vendre ?","Vente d'un produit",JOptionPane.QUESTION_MESSAGE));
+                        try {
+                            m1.vendre(article[0],quant);
+                        } catch (Exception e1){
+                            jop2.showMessageDialog(null,"Vous n'avez pas ce produit en quantité suffisante ! ");
+                        }
+                        label2.setText(String.valueOf(m1.ventes.get(article[0].getRef())));
+                        label4.setText(String.valueOf(m1.getStock().get(article[0].getRef())));
+                        label6.setText(String.valueOf(m1.getStock().get(article[0].getRef())*article[0].getPrixVente())+" €");
                     }
                 }
             }
@@ -344,16 +382,20 @@ public class Cartes extends JFrame implements ActionListener {
                     JOptionPane jop2 = new JOptionPane();
                     jop2.showMessageDialog(null,"La description de l'article "+ article[0].getNomArticle() +" est : "+ article[0].getDescription());
                 }
+                if (checkSoldes.get(article[0].getRef())!=0.0){
+                    button4.setText("Ne plus solder");
+                }
+                else button4.setText("Solder");
             }
         });
         button4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (checkDispos.get("setDescription")){
-                    //activer/désactiver soldes
-                    if (checkSoldes[0]){
+                    //activer/désactiver soldes d'un article
+                    if (checkSoldes.get(article[0].getRef())!=0.0){
                         article[0].arreterSoldes();
-                        checkSoldes[0] =false;
+                        checkSoldes.replace(article[0].getRef(),0.0);
                         button4.setText("Solder");
                         label6.setText(String.valueOf(m1.getStock().get(article[0].getRef()) * article[0].getPrixVente())+" €");
 
@@ -361,8 +403,11 @@ public class Cartes extends JFrame implements ActionListener {
                     else {
                         JOptionPane jop1 = new JOptionPane();
                         double pourcentage = Float.valueOf(jop1.showInputDialog(null,"A combien de % voulez-vous solder votre article ?"));
+                        checkSoldes.replace(article[0].getRef(),pourcentage);
+                        if (checkSoldesMagasin[0]){
+                            article[0].debuterSoldes(pourcentage*pourcentage2);
+                        }
                         article[0].debuterSoldes(pourcentage);
-                        checkSoldes[0]=true;
                         button4.setText("Ne plus solder");
                         label6.setText(String.valueOf(m1.getStock().get(article[0].getRef()) * article[0].getPrixVente())+" €");
                     }
@@ -376,8 +421,8 @@ public class Cartes extends JFrame implements ActionListener {
                     }
                     else {
                         JOptionPane jop1 = new JOptionPane();
-                        double pourcentage = Float.valueOf(jop1.showInputDialog(null,"A combien de % voulez-vous solder votre magasin ?"));
-                        m1.debuterSoldes(pourcentage);
+                        double pourcentage2 = Double.valueOf(jop1.showInputDialog(null,"A combien de % voulez-vous solder votre magasin ?"));
+                        m1.debuterSoldes(pourcentage2);
                         checkSoldesMagasin[0]=true;
                         button4.setText("Ne plus solder");
                     }
