@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ddb329c-10d2-481a-95a8-fdae1dcd52f6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/com/mco/BilanComptable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/mco/Cartes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mco/Cartes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/mco/Magasin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mco/Magasin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/mco/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mco/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="0ddb329c-10d2-481a-95a8-fdae1dcd52f6" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -181,6 +176,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>stock</find>
+      <find>syst</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -227,24 +223,8 @@
         <subPane>
           <expand>
             <path>
-              <item name="project_java_ecm-master" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project_java_ecm-master" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project_java_ecm-master" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project_java_ecm-master" type="462c0819:PsiDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project_java_ecm-master" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project_java_ecm-master" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="project_java_ecm-master" type="b2602c69:ProjectViewProjectNode" />
-              <item name="project_java_ecm-master" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="mco" type="462c0819:PsiDirectoryNode" />
+              <item name="project_java_ecm" type="b2602c69:ProjectViewProjectNode" />
+              <item name="project_java_ecm" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -257,8 +237,11 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538761251353" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1538859743041" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -311,18 +294,17 @@
       <option name="presentableId" value="Default" />
       <updated>1537366005038</updated>
       <workItem from="1538751359897" duration="9270000" />
-      <workItem from="1538832321946" duration="21839000" />
+      <workItem from="1538832321946" duration="22162000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="31109000" />
+    <option name="totallyTimeSpent" value="31432000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.26172465" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26172465" />
       <window_info id="Structure" order="1" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -331,7 +313,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3276923" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3276923" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
