@@ -180,7 +180,33 @@ public class Cartes extends JFrame implements ActionListener {
                             }
                         }
                     }
-
+                    else {
+                        //faire la procédure de vente d'un produit
+                        JOptionPane jop2 = new JOptionPane();
+                        String[] list_choix = new String[m1.getStock().keySet().size()];
+                        int j=0;
+                        for (String m:m1.getStock().keySet()){
+                            list_choix[j]= m;
+                            System.out.println(list_choix[j]);
+                            j++;
+                        }
+                        String choix_article = (String)jop2.showInputDialog(null,"Quel article ?","Vente d'un article"
+                                ,JOptionPane.QUESTION_MESSAGE,null, list_choix,null);
+                        boolean a=false;
+                        for (int i=0;i<m1.tableauArticles.size();i++){
+                            if (a){}
+                            else if (m1.tableauArticles.get(i).getRef()==choix_article){
+                                article[0] =m1.tableauArticles.get(i);
+                                a=true;
+                            }
+                        }
+                        int quant = Integer.valueOf(jop2.showInputDialog(null,"Sa marque ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE));
+                        try {
+                            m1.vendre(article[0],quant);
+                        } catch (Exception e1){
+                            jop2.showMessageDialog(null,"Vous n'avez pas ce produit en quantité suffisante ! ");
+                        }
+                    }
                 }
             }
         });

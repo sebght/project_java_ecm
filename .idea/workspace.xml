@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ddb329c-10d2-481a-95a8-fdae1dcd52f6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project_shop/com/mco/Cartes.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project_shop/com/mco/EssaiCartes.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project_shop/com/mco/Magasin.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/mco/Cartes.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mco/Cartes.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/mco/Magasin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/mco/Magasin.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -72,12 +63,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="3428" />
+          <entry key="java" value="3562" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="3428" />
+          <entry key="JAVA" value="3562" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.spring.boot.run.usages" />
@@ -112,8 +103,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/mco/Cartes.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="168" column="25" lean-forward="true" selection-start-line="168" selection-start-column="25" selection-end-line="168" selection-end-column="25" />
+            <state relative-caret-position="222">
+              <caret line="208" column="21" lean-forward="true" selection-start-line="208" selection-start-column="21" selection-end-line="208" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -319,12 +310,12 @@
       <option name="presentableId" value="Default" />
       <updated>1537366005038</updated>
       <workItem from="1538751359897" duration="9270000" />
-      <workItem from="1538832321946" duration="12446000" />
+      <workItem from="1538832321946" duration="14031000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21716000" />
+    <option name="totallyTimeSpent" value="23301000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
@@ -433,8 +424,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/mco/Cartes.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="168" column="25" lean-forward="true" selection-start-line="168" selection-start-column="25" selection-end-line="168" selection-end-column="25" />
+        <state relative-caret-position="222">
+          <caret line="208" column="21" lean-forward="true" selection-start-line="208" selection-start-column="21" selection-end-line="208" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
