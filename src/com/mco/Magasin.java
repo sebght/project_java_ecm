@@ -9,6 +9,8 @@ public class Magasin implements GestionStock, Solde{
     Map<String, Integer> stock = new HashMap<>();
     Map<String,Double> achats = new HashMap<>();
     Map<String,Double> ventes = new HashMap<>();
+    double nbAchats = 0;
+    double nbVentes = 0;
     double argent=0;
 
     //On créé un magasin défini uniquement par son nom et son capital d'argent initial
@@ -24,6 +26,7 @@ public class Magasin implements GestionStock, Solde{
         else {
             //On retire l'argent et on ajoute l'article le nombre de fois adéquat dans le tableau des articles
             argent-=article.getPrixAchat()*quantite;
+            nbAchats+=quantite;
             for (int i=0; i<quantite;i++) {
                 tableauArticles.add(article);
             }
@@ -48,6 +51,7 @@ public class Magasin implements GestionStock, Solde{
         if (stock.containsKey(article.getRef()) &&  stock.get(article.getRef())-quantite>=0){
             stock.replace(article.getRef(),stock.get(article.getRef())-quantite);
             argent+=article.getPrixVente()*quantite;
+            nbVentes+=quantite;
             for (int i=0; i<quantite;i++) {
                 tableauArticles.remove(article);
             }

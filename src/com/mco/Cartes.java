@@ -3,10 +3,12 @@ package com.mco;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.JPanel;
 import javax.xml.bind.Element;
@@ -17,16 +19,6 @@ public class Cartes extends JFrame implements ActionListener {
     public Cartes(String magasin,float arg) {
         super();
         JPanel card1 = new JPanel();
-        JLabel label1 = new JLabel("Nb Articles");
-        JLabel label2 = new JLabel(String.valueOf(0));
-        JLabel label3 = new JLabel("Stock");
-        JLabel label4 = new JLabel(String.valueOf(0));
-        JLabel label5 = new JLabel("Argent");
-        JLabel label6 = new JLabel(String.valueOf(arg)+" €");
-        JButton button1 = new JButton("Acheter/Vendre");
-        JButton button2 = new JButton("Bilan");
-        JButton button3 = new JButton("Infos Article");
-        JButton button4 = new JButton("Solder");
         Magasin m1 = new Magasin(magasin,arg);
         Article art1 = new Article("1pqf","Parapluie",false,20,25,"Umbrellaforlife","Oh il est beau le parapluie");
         Electromenager art2 = new Electromenager("9ekg","Aspirateur",false,120,210,"Aspi2000","Aspirateur de compét","Rowenta","toutes pièces");
@@ -38,13 +30,35 @@ public class Cartes extends JFrame implements ActionListener {
         m1.vendre(art2,2);
         m1.achat(art3,5);
         m1.achat(art4,3);
-        setPreferredSize(new Dimension(300,350));
+        JLabel label1 = new JLabel("Nb Ventes");
+        JLabel label2 = new JLabel(String.valueOf(m1.nbVentes));
+        JLabel label3 = new JLabel("Stock");
+        JLabel label4 = new JLabel(String.valueOf(m1.nbAchats));
+        JLabel label5 = new JLabel("Argent");
+        JLabel label6 = new JLabel(String.valueOf(m1.getArgent())+" €");
+        JButton button1 = new JButton("Acheter/Vendre");
+        JButton button2 = new JButton("Bilan");
+        JButton button3 = new JButton("Infos Article");
+        JButton button4 = new JButton("Solder");
+        JButton accueil = new JButton();
+        setPreferredSize(new Dimension(400,350));
         setTitle("Gérer "+magasin);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        try {
+            Image img = ImageIO.read(getClass().getResource("/com/if_go-home_118770.png"));
+            accueil.setIcon(new ImageIcon(img));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         button1.setPreferredSize(new Dimension(125,50));
         button2.setPreferredSize(new Dimension(125,50));
         button3.setPreferredSize(new Dimension(125,50));
         button4.setPreferredSize(new Dimension(125,50));
+        accueil.setPreferredSize(new Dimension(50,50));
+//        accueil.setIcon(imageIcon);
+        accueil.setBorderPainted(false);
+        accueil.setFocusPainted(false);
+        accueil.setContentAreaFilled(false);
         // Init grid
         setLayout(new BorderLayout());
         JPanel panecran = new JPanel();
@@ -54,17 +68,17 @@ public class Cartes extends JFrame implements ActionListener {
         gauche.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         centre.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         droite.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        label1.setPreferredSize(new Dimension(90,45));
+        label1.setPreferredSize(new Dimension(120,45));
         label1.setHorizontalAlignment(JLabel.CENTER);
-        label2.setPreferredSize(new Dimension(90,45));
+        label2.setPreferredSize(new Dimension(120,45));
         label2.setHorizontalAlignment(JLabel.CENTER);
-        label3.setPreferredSize(new Dimension(90,45));
+        label3.setPreferredSize(new Dimension(120,45));
         label3.setHorizontalAlignment(JLabel.CENTER);
-        label4.setPreferredSize(new Dimension(90,45));
+        label4.setPreferredSize(new Dimension(120,45));
         label4.setHorizontalAlignment(JLabel.CENTER);
-        label5.setPreferredSize(new Dimension(90,45));
+        label5.setPreferredSize(new Dimension(120,45));
         label5.setHorizontalAlignment(JLabel.CENTER);
-        label6.setPreferredSize(new Dimension(90,45));
+        label6.setPreferredSize(new Dimension(120,45));
         label6.setHorizontalAlignment(JLabel.CENTER);
         gauche.add(label1,BorderLayout.NORTH);
         gauche.add(label2,BorderLayout.SOUTH);
@@ -75,7 +89,7 @@ public class Cartes extends JFrame implements ActionListener {
         panecran.add(gauche,BorderLayout.WEST);
         panecran.add(centre,BorderLayout.CENTER);
         panecran.add(droite,BorderLayout.EAST);
-        panecran.setPreferredSize(new Dimension(250,195));
+        panecran.setPreferredSize(new Dimension(350,195));
         getContentPane().add(panecran,BorderLayout.NORTH);
         JPanel boutonssouth = new JPanel();
         JPanel boutonscenter = new JPanel();
@@ -84,6 +98,7 @@ public class Cartes extends JFrame implements ActionListener {
         boutonssouth.add(button3);
         boutonssouth.add(button4);
         boutonscenter.add(button1);
+        boutonscenter.add(accueil);
         boutonscenter.add(button2);
         getContentPane().add(boutonssouth,BorderLayout.SOUTH);
         getContentPane().add(boutonscenter,BorderLayout.CENTER);
@@ -103,6 +118,31 @@ public class Cartes extends JFrame implements ActionListener {
         final boolean[] checkSoldesMagasin = {false};
         final String[] choix_article = {new String()};
         final Article[] article = {new Article("x", "x", true, 1, 1, "x", "x")};
+        accueil.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                checkDispos.put("transac",true);
+                checkDispos.put("bilan",true);
+                checkDispos.put("infos_article",true);
+                checkDispos.put("soldes",true);
+                checkDispos.put("elec",false);
+                checkDispos.put("habits",false);
+                checkDispos.put("primeur",false);
+                checkDispos.put("bilanArticle",false);
+                checkDispos.put("getDescription",false);
+                checkDispos.put("setDescription",false);
+                label1.setText("Nb ventes");
+                label2.setText(String.valueOf(m1.nbVentes));
+                label3.setText("Stock");
+                label4.setText(String.valueOf(m1.nbAchats));
+                label5.setText("Argent");
+                label6.setText(String.valueOf(m1.getArgent())+" €");
+                button1.setText("Acheter/Vendre");
+                button2.setText("Bilan");
+                button3.setText("Infos Article");
+                button4.setText("Solder");
+            }
+        });
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -179,6 +219,9 @@ public class Cartes extends JFrame implements ActionListener {
                                 jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ce produit ! ");
                             }
                         }
+                        label2.setText(String.valueOf(m1.nbVentes));
+                        label4.setText(String.valueOf(m1.nbAchats));
+                        label6.setText(String.valueOf(m1.getArgent())+" €");
                     }
                     else {
                         //faire la procédure de vente d'un produit
@@ -187,7 +230,6 @@ public class Cartes extends JFrame implements ActionListener {
                         int j=0;
                         for (String m:m1.getStock().keySet()){
                             list_choix[j]= m;
-                            System.out.println(list_choix[j]);
                             j++;
                         }
                         String choix_article = (String)jop2.showInputDialog(null,"Quel article ?","Vente d'un article"
@@ -206,6 +248,9 @@ public class Cartes extends JFrame implements ActionListener {
                         } catch (Exception e1){
                             jop2.showMessageDialog(null,"Vous n'avez pas ce produit en quantité suffisante ! ");
                         }
+                        label2.setText(String.valueOf(m1.nbVentes));
+                        label4.setText(String.valueOf(m1.nbAchats));
+                        label6.setText(String.valueOf(m1.getArgent())+" €");
                     }
                 }
             }
@@ -260,16 +305,11 @@ public class Cartes extends JFrame implements ActionListener {
                     checkDispos.replace("getDescription",true);
                     button2.setText("Get Description");
                     button3.setText("Set Description");
-                    label2.setText("0");
-                    label4.setText("0");
-                    label5.setText("Valeur théorique");
-                    label6.setText("0");
                     JOptionPane jop1 = new JOptionPane();
                     String[] list_choix = new String[m1.getStock().keySet().size()];
                     int j=0;
                     for (String m:m1.getStock().keySet()){
                         list_choix[j]= m;
-                        System.out.println(list_choix[j]);
                         j++;
                     }
                     String choix_article = (String)jop1.showInputDialog(null,"Quel article ?","Infos d'un article"
@@ -283,6 +323,10 @@ public class Cartes extends JFrame implements ActionListener {
                         }
                     }
                     setTitle("Gestion Article : "+article[0].getNomArticle());
+                    label2.setText(String.valueOf(m1.getVentes().get(article[0].getRef()))+" €");
+                    label4.setText(String.valueOf(m1.getStock().get(article[0].getRef())));
+                    label5.setText("Valeur théorique");
+                    label6.setText(String.valueOf(m1.getStock().get(article[0].getRef()) * article[0].getPrixVente())+" €");
                 }
                 else if (checkDispos.get("primeur")){
                     //faire apparaitre bilan Primeur
@@ -311,6 +355,8 @@ public class Cartes extends JFrame implements ActionListener {
                         article[0].arreterSoldes();
                         checkSoldes[0] =false;
                         button4.setText("Solder");
+                        label6.setText(String.valueOf(m1.getStock().get(article[0].getRef()) * article[0].getPrixVente())+" €");
+
                     }
                     else {
                         JOptionPane jop1 = new JOptionPane();
@@ -318,6 +364,7 @@ public class Cartes extends JFrame implements ActionListener {
                         article[0].debuterSoldes(pourcentage);
                         checkSoldes[0]=true;
                         button4.setText("Ne plus solder");
+                        label6.setText(String.valueOf(m1.getStock().get(article[0].getRef()) * article[0].getPrixVente())+" €");
                     }
                 }
                 else if (checkDispos.get("infos_article")){
@@ -342,7 +389,6 @@ public class Cartes extends JFrame implements ActionListener {
                     int j=0;
                     for (String m:m1.getStock().keySet()){
                         list_choix[j]= m;
-                        System.out.println(list_choix[j]);
                         j++;
                     }
                     String choix_article = (String)jop1.showInputDialog(null,"Quel article ?","Bilan comptable d'un article"
