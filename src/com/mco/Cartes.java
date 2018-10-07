@@ -195,12 +195,13 @@ public class Cartes extends JFrame implements ActionListener {
                         do {
                             x3=jop2.showInputDialog(null,"Combien voulez-vous en acheter ? (obligatoire)","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
                         }while (x3==null);
-                        int quant= Integer.valueOf(x3);
+                        double quantite= Double.valueOf(x3);
                         String nomFournisseur = jop2.showInputDialog(null,"Son fournisseur ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
                         String description = jop2.showInputDialog(null,"Sa description ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
                         if (rang2==0){
                             String marque = jop2.showInputDialog(null,"Sa marque ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
                             String piece = jop2.showInputDialog(null,"La pièce dans laquelle il s'utilise ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                            int quant = (int)quantite;
                             if (prixAchat*quant>m1.getArgent()){
                                 jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ces produits ! ");
                             }
@@ -212,6 +213,7 @@ public class Cartes extends JFrame implements ActionListener {
                             String marque = jop2.showInputDialog(null,"Sa marque ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
                             String taille = jop2.showInputDialog(null,"Sa taille ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
                             String couleur = jop2.showInputDialog(null,"Sa couleur ?","Achat d'un produit",JOptionPane.QUESTION_MESSAGE);
+                            int quant = (int)quantite;
                             if (prixAchat*quant>m1.getArgent()){
                                 jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ces produits ! ");
                             }
@@ -224,12 +226,17 @@ public class Cartes extends JFrame implements ActionListener {
                             String type = typeList[jop2.showOptionDialog(null,"Quelle catégorie de produit voulez-vous acheter ?","Achat d'un produit",
                                     JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,typeList,null)];
                             String[] isKilo = {"Kilo","Pièce"};
-                            int kilo_piece = jop2.showOptionDialog(null,"Quelle catégorie de produit voulez-vous acheter ?","Achat d'un produit",
+                            int kilo_piece = jop2.showOptionDialog(null,"Le vendez-vous à la pièce ou au poids ?","Achat d'un produit",
                                     JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,isKilo,null);
                             boolean check_kilo_piece;
-                            if (kilo_piece==0)
+                            double quant=quantite;
+                            if (kilo_piece==0){
                                 check_kilo_piece=true;
-                            else check_kilo_piece=false;
+                                }
+                            else {
+                                check_kilo_piece=false;
+                                quant = (int)quantite;
+                            }
                             String sous_type;
                             if (type=="Fruit"){
                                 String[] sous_typeList = {"Feuille","Tige","Fleur","Racine","Bulbe","Légume sec","Légume fruit","Tubercule"};
@@ -249,11 +256,23 @@ public class Cartes extends JFrame implements ActionListener {
                             }
                         }
                         else{
+                            String[] isKilo = {"Kilo","Pièce"};
+                            int kilo_piece = jop2.showOptionDialog(null,"Le vendez-vous à la pièce ou au poids ?","Achat d'un produit",
+                                    JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,isKilo,null);
+                            boolean check_kilo_piece;
+                            double quant=quantite;
+                            if (kilo_piece==0){
+                                check_kilo_piece=true;
+                            }
+                            else {
+                                check_kilo_piece=false;
+                                quant = (int)quantite;
+                            }
                             if (prixAchat*quant>m1.getArgent()){
                                 jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ces produits ! ");
                             }
                             else {
-                                m1.achat(new Article(ref,nomArticle,false,prixAchat,prixVente,nomFournisseur,description),quant);
+                                m1.achat(new Article(ref,nomArticle,check_kilo_piece,prixAchat,prixVente,nomFournisseur,description),quant);
                             }
                         }
                         label2.setText(String.valueOf(m1.nbVentes));
@@ -292,7 +311,11 @@ public class Cartes extends JFrame implements ActionListener {
                                 b=true;
                             }
                         }
-                        int quant = Integer.valueOf(jop2.showInputDialog(null,"Combien voulez-vous en vendre ?","Vente d'un produit",JOptionPane.QUESTION_MESSAGE));
+                        double quantite = Double.valueOf(jop2.showInputDialog(null,"Combien voulez-vous en vendre ?","Vente d'un produit",JOptionPane.QUESTION_MESSAGE));
+                        double quant = quantite;
+                        if (!article[0].estKilo){
+                            quant = (int) quantite;
+                        }
                         if (quant>m1.getStock().get(article[0].getRef())){
                             jop2.showMessageDialog(null,"Vous n'avez pas ce produit en quantité suffisante ! Vous n'en avez que "+m1.getStock().get(article[0].getRef()));
                         }
@@ -315,7 +338,11 @@ public class Cartes extends JFrame implements ActionListener {
                         do {
                             x1=jop2.showInputDialog(null,"Combien voulez-vous en acheter ?","Achat de ce produit",JOptionPane.QUESTION_MESSAGE);
                         }while (x1==null);
-                        int quant= Integer.valueOf(x1);
+                        double quantite= Double.valueOf(x1);
+                        double quant = quantite;
+                        if (!article[0].isEstKilo()){
+                            quant = (int)quantite;
+                        }
                         if (article[0].getPrixAchat()*quant>m1.getArgent()){
                             jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ces produits ! ");
                         }
@@ -331,7 +358,11 @@ public class Cartes extends JFrame implements ActionListener {
                         do {
                             x1=jop2.showInputDialog(null,"Combien voulez-vous en vendre ?","Vente de ce produit",JOptionPane.QUESTION_MESSAGE);
                         }while (x1==null);
-                        int quant= Integer.valueOf(x1);
+                        double quantite= Double.valueOf(x1);
+                        double quant = quantite;
+                        if (!article[0].isEstKilo()){
+                            quant = (int)quantite;
+                        }
                         if (m1.getStock().get(article[0].getRef())<quant){
                             jop2.showMessageDialog(null,"Vous n'avez pas ce produit en quantité suffisante ! ");
                         }
