@@ -273,9 +273,9 @@ public class Cartes extends JFrame implements ActionListener {
                             } catch (Exception e1){
                                 jop2.showMessageDialog(null,"Vous n'avez pas assez d'argent pour acheter ces produits ! ");
                             }
-                        label2.setText(String.valueOf(m1.ventes.get(article[0].getRef())));
+                        label2.setText(String.valueOf(article[0].getPrixAchat())+" €");
                         label4.setText(String.valueOf(m1.getStock().get(article[0].getRef())));
-                        label6.setText(String.valueOf(m1.getStock().get(article[0].getRef())*article[0].getPrixVente())+" €");
+                        label6.setText(String.valueOf(article[0].getPrixVente())+" €");
                     }
                     else {
                         //faire la procédure de vente d'un produit
@@ -286,9 +286,9 @@ public class Cartes extends JFrame implements ActionListener {
                         } catch (Exception e1){
                             jop2.showMessageDialog(null,"Vous n'avez pas ce produit en quantité suffisante ! ");
                         }
-                        label2.setText(String.valueOf(m1.ventes.get(article[0].getRef())));
+                        label2.setText(String.valueOf(article[0].getPrixAchat())+" €");
                         label4.setText(String.valueOf(m1.getStock().get(article[0].getRef())));
-                        label6.setText(String.valueOf(m1.getStock().get(article[0].getRef())*article[0].getPrixVente())+" €");
+                        label6.setText(String.valueOf(article[0].getPrixVente())+" €");
                     }
                 }
             }
@@ -348,23 +348,33 @@ public class Cartes extends JFrame implements ActionListener {
                     int j=0;
                     for (String m:m1.getStock().keySet()){
                         list_choix[j]= m;
+                        boolean a=false;
+                        for (int i=0;i<m1.tableauArticles.size();i++){
+                            if (a){}
+                            else if (m1.tableauArticles.get(i).getRef()==m){
+                                article[0] =m1.tableauArticles.get(i);
+                                a=true;
+                            }
+                        }
+                        list_choix[j]+=" - "+article[0].getNomArticle();
                         j++;
                     }
                     String choix_article = (String)jop1.showInputDialog(null,"Quel article ?","Infos d'un article"
-                            ,JOptionPane.QUESTION_MESSAGE,null, list_choix,null);
-                    boolean a=false;
+                            ,JOptionPane.QUESTION_MESSAGE,null, list_choix,list_choix[0]);
+                    boolean b=false;
                     for (int i=0;i<m1.tableauArticles.size();i++){
-                        if (a){}
-                        else if (m1.tableauArticles.get(i).getRef()==choix_article){
+                        if (b){}
+                        else if ((m1.tableauArticles.get(i).getRef() + " - " + m1.tableauArticles.get(i).getNomArticle()).equals(choix_article)){
                             article[0] =m1.tableauArticles.get(i);
-                            a=true;
+                            b=true;
                         }
                     }
                     setTitle("Gestion Article : "+article[0].getNomArticle());
-                    label2.setText(String.valueOf(m1.getVentes().get(article[0].getRef()))+" €");
+                    label1.setText("Prix d'achat");
+                    label2.setText(article[0].getPrixAchat()+" €");
                     label4.setText(String.valueOf(m1.getStock().get(article[0].getRef())));
-                    label5.setText("Valeur théorique");
-                    label6.setText(String.valueOf(m1.getStock().get(article[0].getRef()) * article[0].getPrixVente())+" €");
+                    label5.setText("Prix de vente");
+                    label6.setText(article[0].getPrixVente()+" €");
                 }
                 else if (checkDispos.get("primeur")){
                     //faire apparaitre bilan Primeur
@@ -466,8 +476,15 @@ class EssaiCartes {
     public static void main(String[] arg) {
         JOptionPane jop1 = new JOptionPane();
         JOptionPane jop2 = new JOptionPane();
-        String nom = jop1.showInputDialog(null,"Quel est le nom de votre magasin ?","Initialisation magasin",JOptionPane.QUESTION_MESSAGE);
-        Float x = Float.valueOf(jop2.showInputDialog(null,"Combien votre magasin possède-t-il d'argent ?","Argent du magasin",JOptionPane.QUESTION_MESSAGE));
-        new Cartes(nom,x);
+        String nom = null;
+        do {
+            nom = jop1.showInputDialog(null,"Quel est le nom de votre magasin ?","Initialisation magasin",JOptionPane.QUESTION_MESSAGE);
+        }while (nom==null);
+        String x = null;
+        do {
+            x = jop2.showInputDialog(null,"Combien votre magasin possède-t-il d'argent ?","Argent du magasin",JOptionPane.QUESTION_MESSAGE);
+        }while (x==null);
+        Float argent = Float.valueOf(x);
+        new Cartes(nom,argent);
     }
 }
