@@ -6,7 +6,7 @@ public class Magasin implements GestionStock, Solde{
     String magasin;
     ArrayList<Article> tableauArticles=new ArrayList<>();
     ArrayList<Double> tableauPrixAvantSoldes=new ArrayList<>();
-    Map<String, Integer> stock = new HashMap<>();
+    Map<String, Double> stock = new HashMap<>();
     Map<String,Double> achats = new HashMap<>();
     Map<String,Double> ventes = new HashMap<>();
     double nbAchats = 0;
@@ -19,7 +19,7 @@ public class Magasin implements GestionStock, Solde{
         this.argent=argent;
     }
 
-    public void achat(Article article , int quantite){
+    public void achat(Article article , double quantite){
         //Si pas assez d'argent dans le magasin pour acheter le produit:
         if (article.getPrixAchat()*quantite>argent)
             System.out.println("Votre magasin ne peut pas se permettre d'acheter autant de produits de ce type, il n'a pas assez d'argent !");
@@ -47,7 +47,7 @@ public class Magasin implements GestionStock, Solde{
         }
     }
 
-    public void vendre(Article article, int quantite) {
+    public void vendre(Article article, double quantite) {
         if (stock.containsKey(article.getRef()) &&  stock.get(article.getRef())-quantite>=0){
             stock.replace(article.getRef(),stock.get(article.getRef())-quantite);
             argent+=article.getPrixVente()*quantite;
@@ -108,8 +108,13 @@ public class Magasin implements GestionStock, Solde{
         double sommeAchats=0;
         double sommeVentes=0;
         double marge;
+        //Je créée un set de strings dans laquelle je mettrai toutes les references de produits electromenagers du magasin
+        //On créée un set car le set n'acceptera pas l'ajout d'un duplicata
+        Set<Article> mesArticles=new HashSet<>();
+        mesArticles.addAll(tableauArticles);
+
         //On somme les prix d'achats puis de vente de tous les articles
-        for (Article article : tableauArticles){
+        for (Article article : mesArticles){
             try {
                 sommeAchats+=achats.get(article.getRef());
             } catch (Exception e){
@@ -123,6 +128,7 @@ public class Magasin implements GestionStock, Solde{
                 sommeVentes+=0;
                 System.out.println("Aucune vente de cet article n'a été répertoriée");
             }
+
         }
         //On fait la différence pour obtenir le bilan comptable du magasin:
         marge=sommeVentes-sommeAchats;
@@ -266,11 +272,11 @@ public class Magasin implements GestionStock, Solde{
         this.tableauArticles = tableauArticles;
     }
 
-    public Map<String, Integer> getStock() {
+    public Map<String, Double> getStock() {
         return stock;
     }
 
-    public void setStock(Map<String, Integer> stock) {
+    public void setStock(Map<String, Double> stock) {
         this.stock = stock;
     }
 
